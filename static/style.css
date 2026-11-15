@@ -9,52 +9,96 @@
 body {
     width: 100%;
     overflow-x: hidden;
+    background-color: #f7f9fa;
+    color: #1a202c;
 }
 
-/* Шапка сайта: прозрачная и легкая */
+/* Шапка сайта: по умолчанию зафиксирована на ПК */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.8rem 4rem;
+    padding: 1.5rem 3rem;
     background-color: #ffffff;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
+/* 1. Логотип слева */
 .logo {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     letter-spacing: 0.15rem;
     text-transform: uppercase;
     font-weight: 600;
     color: #1a202c;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
 }
 
-nav {
+.logo:hover {
+    opacity: 0.75;
+}
+
+/* 2. Навигация по центру */
+.nav-menu {
     display: flex;
     align-items: center;
+    gap: 1.5rem;
 }
 
-nav a {
-    margin-left: 2.2rem;
+.nav-menu a {
     text-decoration: none;
     color: #4a5568;
-    font-size: 0.9rem;
-    letter-spacing: 0.08rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.05rem;
     text-transform: uppercase;
     transition: color 0.3s ease;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
-nav a:hover {
+.nav-menu a:hover {
     color: #2b6cb0;
 }
 
-/* Секция Hero */
+/* 3. Кнопки справа (черные) */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.nav-btn-primary,
+.nav-btn-secondary {
+    text-decoration: none;
+    background-color: #1a202c;
+    color: #ffffff;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.nav-btn-primary:hover,
+.nav-btn-secondary:hover {
+    background-color: #4a5568;
+}
+
+/* Секция Hero (делаем отступ сверху, чтобы контент не прятался под фиксированной шапкой) */
 .hero {
     position: relative;
-    padding: 10rem 1rem;
+    padding: 12rem 1rem 10rem 1rem; /* Увеличили верхний отступ для ПК */
     text-align: center;
-    /* Плотный темный градиент для читаемости текста */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.1)), url('D:mirada_del_mar/static/images/hero-bg.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.1)), url('D:/mirada_del_mar/static/images/hero-bg.jpg');
     background-size: cover;
     background-position: center;
     color: #ffffff;
@@ -65,13 +109,13 @@ nav a:hover {
 }
 
 .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem); /* Плавное резиновое масштабирование заголовка */
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 400;
     letter-spacing: 0.2rem;
     color: #ffffff;
     margin-bottom: 1.2rem;
     text-transform: uppercase;
-    text-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.3); /* Тень для объема */
+    text-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
 }
 
 .hero p {
@@ -130,27 +174,52 @@ nav a:hover {
 }
 
 /* ==========================================
-   Адаптив для планшетов и мобильных устройств
+   Профессиональный адаптив
    ========================================== */
-@media (max-width: 48rem) { /* 768px эквивалент */
+@media (max-width: 68rem) {
     header {
+        padding: 1.2rem 1.5rem;
+    }
+    .nav-menu {
+        gap: 1rem;
+    }
+    .nav-menu a {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 54rem) {
+    /* На мобильных устройствах делаем шапку статичной, чтобы она не перекрывала контент */
+    header {
+        position: relative;
         flex-direction: column;
         padding: 1.2rem 1rem;
-        gap: 1rem;
+        gap: 1.2rem;
         text-align: center;
     }
 
-    nav {
-        flex-direction: column;
-        gap: 0.6rem;
-        width: 100%;
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem 1.2rem;
     }
 
-    nav a {
-        margin-left: 0;
-        font-size: 0.9rem;
-        padding: 0.4rem 0;
-        display: block;
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    /* Убираем лишний отступ у hero на мобилках, так как шапка теперь в потоке */
+    .hero {
+        padding: 6rem 1rem;
+    }
+}
+
+@media (max-width: 36rem) {
+    .nav-menu {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
     .hero {

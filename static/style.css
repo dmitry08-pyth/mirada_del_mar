@@ -1,0 +1,112 @@
+/* Общие настройки */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Шапка сайта: прозрачная и легкая */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 60px;
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+nav a {
+    margin-left: 35px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #2b6cb0;
+}
+
+.hero {
+    position: relative;
+    padding: 180px 20px;
+    text-align: center;
+    /* Плотный темный градиент для читаемости текста */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.1)), url('D:mirada_del_mar/static/images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+}
+
+.hero h1 {
+    font-size: 56px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Тень для объема */
+}
+
+.hero p {
+    font-size: 18px;
+    color: #ffffff;
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+    line-height: 1.6;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.hero .btn {
+    display: inline-block;
+    padding: 16px 36px;
+    background-color: rgba(0, 0, 0, 0.55); 
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.hero .btn:hover {
+    background-color: #ffffff;
+    color: #1a202c;
+}
+
+.about {
+    padding: 100px 20px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #2d3748;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.about p {
+    font-size: 16px;
+    color: #718096;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.8;
+}

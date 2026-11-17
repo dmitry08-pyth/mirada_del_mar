@@ -93,10 +93,10 @@ header {
     background-color: #4a5568;
 }
 
-/* Секция Hero (делаем отступ сверху, чтобы контент не прятался под фиксированной шапкой) */
+/* Секция Hero */
 .hero {
     position: relative;
-    padding: 12rem 1rem 10rem 1rem; /* Увеличили верхний отступ для ПК */
+    padding: 12rem 1rem 4rem 1rem;
     text-align: center;
     background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.1)), url('D:/mirada_del_mar/static/images/hero-bg.jpg');
     background-size: cover;
@@ -114,7 +114,7 @@ header {
     letter-spacing: 0.2rem;
     color: #ffffff;
     margin-bottom: 1.2rem;
-    text-transform: uppercase;
+    text-transform: capitalize;
     text-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
 }
 
@@ -132,6 +132,7 @@ header {
 .hero .btn {
     display: inline-block;
     padding: 1rem 2.2rem;
+    margin-top: 11rem;
     background-color: rgba(0, 0, 0, 0.55); 
     color: #ffffff;
     text-decoration: none;
@@ -150,7 +151,7 @@ header {
 
 /* Секция About */
 .about {
-    padding: 6rem 1.5rem;
+    padding: 3rem 1.5rem;
     background-color: #ffffff;
     text-align: center;
 }
@@ -174,6 +175,122 @@ header {
 }
 
 /* ==========================================
+   Секция-витрина со слайдером (Номера и др.)
+   ========================================== */
+.showcase {
+    padding: 4rem 0;
+    background-color: #f7f9fa;
+    text-align: center;
+}
+
+.showcase h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 300;
+    letter-spacing: 0.15rem;
+    color: #2d3748;
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+}
+
+/* Контейнер-держатель для кнопок и ленты */
+.slider-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2.5rem;
+}
+
+/* Горизонтальная лента карточек */
+.slider-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 0 22vw; /* Оставляет место по бокам, чтобы выглядывали соседние фото */
+    scrollbar-width: none; /* Скрывает скроллбар в Firefox */
+}
+
+.slider-track::-webkit-scrollbar {
+    display: none; /* Скрывает скроллбар в Chrome/Edge/Safari */
+}
+
+/* Отдельная карточка с фото */
+.slide-card {
+    position: relative;
+    flex: 0 0 56vw; /* Запрещает сжиматься и задает ширину 56% от экрана */
+    height: 30rem;
+    scroll-snap-align: center; /* Магнитит карточку ровно по центру при остановке скролла */
+    overflow: hidden;
+    background-color: #e2e8f0;
+}
+
+.slide-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Обрезает фото без искажения пропорций */
+    display: block;
+}
+
+/* Подпись названия номера поверх фото */
+.slide-caption {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    color: #ffffff;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+/* Круглые кнопки-стрелки */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #1a202c;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 10;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.slider-btn:hover {
+    background-color: #1a202c;
+    color: #ffffff;
+}
+
+.prev-btn {
+    left: 2rem;
+}
+
+.next-btn {
+    right: 2rem;
+}
+
+/* Кнопка "Все номера" под слайдером */
+.outline-btn {
+    display: inline-block;
+    padding: 0.85rem 2.2rem;
+    border: 1px solid #2d3748;
+    border-radius: 2rem;
+    color: #2d3748;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.05rem;
+    transition: all 0.3s ease;
+}
+
+.outline-btn:hover {
+    background-color: #1a202c;
+    color: #ffffff;
+}
+
+/* ==========================================
    Профессиональный адаптив
    ========================================== */
 @media (max-width: 68rem) {
@@ -189,7 +306,6 @@ header {
 }
 
 @media (max-width: 54rem) {
-    /* На мобильных устройствах делаем шапку статичной, чтобы она не перекрывала контент */
     header {
         position: relative;
         flex-direction: column;
@@ -210,9 +326,31 @@ header {
         gap: 1rem;
     }
 
-    /* Убираем лишний отступ у hero на мобилках, так как шапка теперь в потоке */
     .hero {
         padding: 6rem 1rem;
+    }
+
+    .hero .btn {
+        margin-top: 4rem;
+    }
+
+    /* Адаптив слайдера для планшетов и телефонов */
+    .slider-track {
+        padding: 0 10vw;
+        gap: 1rem;
+    }
+
+    .slide-card {
+        flex: 0 0 80vw;
+        height: 20rem;
+    }
+
+    .prev-btn {
+        left: 0.8rem;
+    }
+
+    .next-btn {
+        right: 0.8rem;
     }
 }
 

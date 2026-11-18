@@ -18,7 +18,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 3rem;
+    padding: 0.75rem 3rem;
     background-color: #ffffff;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     position: fixed;
@@ -31,6 +31,8 @@ header {
 
 /* 1. Логотип слева */
 .logo {
+    display: inline-flex;
+    align-items: center;
     font-size: 1.2rem;
     letter-spacing: 0.15rem;
     text-transform: uppercase;
@@ -39,6 +41,13 @@ header {
     text-decoration: none;
     transition: opacity 0.3s ease;
     white-space: nowrap;
+}
+
+.logo img {
+    height: 4rem;
+    width: auto;
+    display: block;
+    object-fit: contain;
 }
 
 .logo:hover {
@@ -178,13 +187,13 @@ header {
    Секция-витрина со слайдером (Номера и др.)
    ========================================== */
 .showcase {
-    padding: 3rem 0 1.5rem 0; /* Сверху 3rem, снизу всего 1.5rem — секции встанут плотнее */
+    padding: 3rem 0 1.5rem 0;
     background-color: #f7f9fa;
     text-align: center;
 }
 
 .showcase:last-of-type {
-    padding-bottom: 4rem; /* Последней секции на странице оставим нормальный отступ снизу */
+    padding-bottom: 4rem;
 }
 
 .showcase h2 {
@@ -192,7 +201,7 @@ header {
     font-weight: 300;
     letter-spacing: 0.15rem;
     color: #2d3748;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     text-transform: uppercase;
 }
 
@@ -200,7 +209,7 @@ header {
 .slider-wrapper {
     position: relative;
     width: 100%;
-    margin-bottom: 0; /* Убрали лишний отступ под слайдером, раз кнопки нет */
+    margin-bottom: 0;
 }
 
 /* Горизонтальная лента карточек */
@@ -208,20 +217,19 @@ header {
     display: flex;
     gap: 1.5rem;
     overflow-x: auto;
-    padding: 0 22vw; /* Оставляет место по бокам, чтобы выглядывали соседние фото */
-    scrollbar-width: none; /* Скрывает скроллбар в Firefox */
+    padding: 0 22vw;
+    scrollbar-width: none;
 }
 
 .slider-track::-webkit-scrollbar {
-    display: none; /* Скрывает скроллбар в Chrome/Edge/Safari */
+    display: none;
 }
 
 /* Отдельная карточка с фото */
 .slide-card {
     position: relative;
-    flex: 0 0 56vw; /* Запрещает сжиматься и задает ширину 56% от экрана */
+    flex: 0 0 56vw;
     height: 30rem;
-    scroll-snap-align: center; /* Магнитит карточку ровно по центру при остановке скролла */
     overflow: hidden;
     background-color: #e2e8f0;
 }
@@ -229,7 +237,7 @@ header {
 .slide-card img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Обрезает фото без искажения пропорций */
+    object-fit: cover;
     display: block;
 }
 
@@ -257,7 +265,7 @@ header {
     border: 1px solid rgba(0, 0, 0, 0.1);
     font-size: 1.1rem;
     cursor: pointer;
-    z-index: 10;
+    z-index: 20;
     user-select: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -292,6 +300,86 @@ header {
 .outline-btn:hover {
     background-color: #1a202c;
     color: #ffffff;
+}
+
+/* ==========================================
+   Вводная шапка внутренних страниц (Номера и др.)
+   ========================================== */
+.page-intro {
+    padding: 7.5rem 1.5rem 3rem 1.5rem;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.page-intro h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 300;
+    letter-spacing: 0.15rem;
+    color: #1a202c;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.page-intro p {
+    font-size: 1rem;
+    color: #718096;
+    max-width: 40rem;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ==========================================
+   Сетка карточек разделов (Номера, Рестораны и др.)
+   ========================================== */
+.catalog-section {
+    padding: 3rem 5% 5rem 5%;
+    background-color: #ffffff;
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3.5rem 2.5rem;
+    max-width: 82rem;
+    margin: 0 auto;
+}
+
+.catalog-card {
+    display: block;
+    text-decoration: none;
+    color: #1a202c;
+}
+
+.catalog-img-box {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: #e2e8f0;
+    margin-bottom: 1.2rem;
+}
+
+.catalog-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.catalog-card:hover .catalog-img-box img {
+    transform: scale(1.03);
+}
+
+.catalog-title {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: #2d3748;
+    letter-spacing: 0.03rem;
+    transition: color 0.3s ease;
+}
+
+.catalog-card:hover .catalog-title {
+    color: #2b6cb0;
 }
 
 /* ==========================================
@@ -336,6 +424,20 @@ header {
 
     .hero .btn {
         margin-top: 4rem;
+    }
+
+    .page-intro {
+        padding: 2rem 1rem 2rem 1rem;
+    }
+
+    .catalog-section {
+        padding: 2rem 8% 3.5rem 8%;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+        max-width: 28rem;
+        gap: 2.2rem;
     }
 
     /* Адаптив слайдера для планшетов и телефонов */

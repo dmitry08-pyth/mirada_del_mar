@@ -4,16 +4,26 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
     const nextBtn = wrapper.querySelector('.next-btn');
 
     const originalCards = Array.from(track.querySelectorAll('.slide-card'));
-    if (originalCards.length === 0) return;
+    const count = originalCards.length;
+    if (count === 0) return;
 
-    const firstClone = originalCards[0].cloneNode(true);
-    const lastClone = originalCards[originalCards.length - 1].cloneNode(true);
+    // Берем по 2 карточки с каждого края для плавного предпросмотра соседей
+    const firstClone1 = originalCards[0].cloneNode(true);
+    const firstClone2 = originalCards[1 % count].cloneNode(true);
+    const lastClone1 = originalCards[count - 1].cloneNode(true);
+    const lastClone2 = originalCards[(count - 2 + count) % count].cloneNode(true);
 
-    track.prepend(lastClone);
-    track.append(firstClone);
+    // Вставляем в начало: [предпоследний_клон, последний_клон]
+    track.prepend(lastClone1);
+    track.prepend(lastClone2);
 
-    let currentIndex = 1; // Начинаем с 1-й настоящей карточки
-    let isMoving = false; // Защита от двойного клика во время анимации
+    // Вставляем в конец: [первый_клон, второй_клон]
+    track.append(firstClone1);
+    track.append(firstClone2);
+
+    // Начинаем с индекса 2 (так как в начале теперь 2 клона: индексы 0 и 1)
+    let currentIndex = 2;
+    let isMoving = false;
 
     function getStep() {
         const cardWidth = originalCards[0].offsetWidth;
@@ -24,7 +34,6 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
     // Ставим начальную позицию без анимации
     track.scrollLeft = getStep() * currentIndex;
 
-    // Функция плавного перехода к нужному слайду
     function moveToSlide(index) {
         if (isMoving) return;
         isMoving = true;
@@ -35,14 +44,16 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
             behavior: 'smooth'
         });
 
-        // Ждем завершения плавной прокрутки (450 мс) и проверяем, не попали ли на клон
         setTimeout(() => {
-            if (currentIndex === 0) {
-                currentIndex = originalCards.length;
-                track.scrollLeft = getStep() * currentIndex; // Мгновенный прыжок без smooth
-            } else if (currentIndex === originalCards.length + 1) {
-                currentIndex = 1;
-                track.scrollLeft = getStep() * currentIndex; // Мгновенный прыжок без smooth
+            // Если доехали до левого клона (индекс 1) -> прыгаем на последний оригинал
+            if (currentIndex <= 1) {
+                currentIndex = count + 1;
+                track.scrollLeft = getStep() * currentIndex;
+            } 
+            // Если доехали до правого клона (индекс count + 2) -> прыгаем на первый оригинал
+            else if (currentIndex >= count + 2) {
+                currentIndex = 2;
+                track.scrollLeft = getStep() * currentIndex;
             }
             isMoving = false;
         }, 450);
@@ -56,7 +67,6 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
         moveToSlide(currentIndex - 1);
     });
 
-    // Подстраховка при изменении размера окна (чтобы слайд не съезжал)
     window.addEventListener('resize', () => {
         track.scrollLeft = getStep() * currentIndex;
     });

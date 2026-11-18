@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="D:/mirada_del_mar/static/style.css">
 </head>
 <body>
-
+  
   <header id="site-header">
     <a href="D:/mirada_del_mar/templates/index.html" class="logo">Mirada Del Mar</a>
 
     <nav class="nav-menu">
       <a href="D:/mirada_del_mar/templates/rooms">Номера</a>
-      <a href="D:/mirada_del_mar/templates/restautants">Рестораны</a>
+      <a href="D:/mirada_del_mar/templates/gastronomy">Гастрономия</a>
       <a href="D:/mirada_del_mar/templates/beach_and_pools">Пляж и бассейны</a>
       <a href="D:/mirada_del_mar/templates/spa">СПА</a>
       <a href="D:/mirada_del_mar/templates/kids">Дети</a>
@@ -26,21 +26,15 @@
     </div>
   </header>
 
-
   <main>
-
+    <!-- HERO секция-->
     <section class="hero">
       <h1>Mirada Del Mar Kemer</h1>
       <p>Ваш идеальный отдых на побережье Средиземного моря в Кемере</p>
       <a href="D:/mirada_del_mar/templates/rooms" class="btn">Посмотреть номера</a>
     </section>
 
-    <section class="about">
-      <h2>Об отеле</h2>
-      <p>Mirada Del Mar — это гармоничное сочетание средиземноморской природы, безупречного сервиса и атмосферы абсолютного уединения на 
-      живописном побережье Кемера.</p>
-    </section>
-
+    <!-- НОМЕРА -->
     <section class="showcase">
       <h2>Номера</h2>
 
@@ -49,23 +43,51 @@
 
         <div class="slider-track">
           <div class="slide-card">
-            <img src="D:/mirada_del_mar/static/images/eco-room-1.jpg" alt="Эконом номер">
+            <img src="D:/mirada_del_mar/static/images/rooms/eco-room-1.jpg" alt="Эконом номер">
             <span class="slide-caption">Эконом номер</span>
           </div>
 
           <div class="slide-card">
-            <img src="D:/mirada_del_mar/static/images/comfort-room-1.jpg" alt='Номер "Комфорт"'>
+            <img src="D:/mirada_del_mar/static/images/rooms/comfort-room-1.jpg" alt='Номер "Комфорт"'>
             <span class="slide-caption">Номер "Комфорт"</span>
           </div>
 
           <div class="slide-card">
-            <img src="D:/mirada_del_mar/static/images/family-room-1.jpg" alt="Семейный номер">
+            <img src="D:/mirada_del_mar/static/images/rooms/family-room-1.jpg" alt="Семейный номер">
             <span class="slide-caption">Семейный номер</span>
           </div>
 
           <div class="slide-card">
-            <img src="D:/mirada_del_mar/static/images/garden-chalet-1.jpg" alt="Garden Chalet">
+            <img src="D:/mirada_del_mar/static/images/rooms/garden-chalet-1.jpg" alt="Garden Chalet">
             <span class="slide-caption">Garden Chalet</span>
+          </div>
+        </div>
+
+        <button class="slider-btn next-btn">&#8594;</button>
+      </div>
+    </section>
+
+    <!-- ГАСТРОНОМИЯ -->
+    <section class="showcase">
+      <h2>Гастрономия</h2>
+
+      <div class="slider-wrapper">
+        <button class="slider-btn prev-btn">&#8592;</button>
+
+        <div class="slider-track">
+          <div class="slide-card">
+            <img src="D:/mirada_del_mar/static/images/gastronomy/vista-main-restaurant.jpg" alt="Главный ресторан Vista">
+            <span class="slide-caption">Главный ресторан Vista</span>
+          </div>
+
+          <div class="slide-card">
+            <img src="D:/mirada_del_mar/static/images/gastronomy/italian-restaurant-la-brezza.jpg" alt="Итальянский ресторан La Brezza">
+            <span class="slide-caption">Итальянский ресторан La Brezza</span>
+          </div>
+
+          <div class="slide-card">
+            <img src="D:/mirada_del_mar/static/images/gastronomy/turquesa-fish.jpg" alt="Turquesa Fish">
+            <span class="slide-caption">Turquesa Fish</span>
           </div>
         </div>
 

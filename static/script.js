@@ -1,11 +1,11 @@
-const wrapper = document.querySelector('.slider-wrapper');
-
-if (wrapper) {
+document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
     const track = wrapper.querySelector('.slider-track');
     const prevBtn = wrapper.querySelector('.prev-btn');
     const nextBtn = wrapper.querySelector('.next-btn');
 
     const originalCards = Array.from(track.querySelectorAll('.slide-card'));
+    if (originalCards.length === 0) return;
+
     const firstClone = originalCards[0].cloneNode(true);
     const lastClone = originalCards[originalCards.length - 1].cloneNode(true);
 
@@ -60,4 +60,4 @@ if (wrapper) {
     window.addEventListener('resize', () => {
         track.scrollLeft = getStep() * currentIndex;
     });
-}
+});

@@ -219,6 +219,8 @@ header {
     overflow-x: auto;
     padding: 0 22vw;
     scrollbar-width: none;
+    touch-action: pan-y;
+    overscroll-behavior-x: contain;
 }
 
 .slider-track::-webkit-scrollbar {
@@ -228,10 +230,13 @@ header {
 /* Отдельная карточка с фото */
 .slide-card {
     position: relative;
+    display: block;
+    text-decoration: none;
     flex: 0 0 56vw;
     height: 30rem;
     overflow: hidden;
     background-color: #e2e8f0;
+    user-select: none;
 }
 
 .slide-card img {
@@ -239,6 +244,12 @@ header {
     height: 100%;
     object-fit: cover;
     display: block;
+    pointer-events: none;
+    transition: transform 0.5s ease;
+}
+
+.slide-card:hover img {
+    transform: scale(1.03);
 }
 
 /* Подпись названия номера поверх фото */
@@ -476,9 +487,9 @@ header {
 }
 
 /* ==========================================
-   Страница СПА: мозаичная галерея (как на скрине)
+   Страница СПА: мозаичная галерея
    ========================================== */
-   .spa-mosaic-section {
+.spa-mosaic-section {
     padding-top: 5.5rem; /* отступ под фиксированную шапку */
     background-color: #ffffff;
 }
@@ -573,6 +584,16 @@ header {
         grid-template-columns: 1fr;
         max-width: 32rem;
         gap: 1.2rem;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+        max-width: 28rem;
+        gap: 3.6rem;
+    }
+
+    .catalog-img-box {
+        margin-bottom: 0.7rem;
     }
 }
 

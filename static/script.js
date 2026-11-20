@@ -1,5 +1,5 @@
 /* ==========================================
-   1. Слайдер-витрина (Главная страница)
+1. Слайдер-витрина (Главная страница)
    ========================================== */
 document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
     const track = wrapper.querySelector('.slider-track');
@@ -9,6 +9,23 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
     const originalCards = Array.from(track.querySelectorAll('.slide-card'));
     const count = originalCards.length;
     if (count === 0) return;
+
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'slider-dots';
+
+    const dots = originalCards.map((_, idx) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = idx === 0 ? 'slider-dot active' : 'slider-dot';
+        dot.setAttribute('aria-label', `Слайд ${idx + 1}`);
+        dot.addEventListener('click', () => {
+            moveToSlide(idx + 2);
+        });
+        dotsContainer.appendChild(dot);
+        return dot;
+    });
+
+    wrapper.insertAdjacentElement('afterend', dotsContainer);
 
     const firstClone1 = originalCards[0].cloneNode(true);
     const firstClone2 = originalCards[1 % count].cloneNode(true);
@@ -29,6 +46,13 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
     let isHorizontalSwipe = false;
     let didSwipe = false;
 
+    function updateDots(index) {
+        const realIndex = (((index - 2) % count) + count) % count;
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === realIndex);
+        });
+    }
+
     function getStep() {
         const cardWidth = originalCards[0].offsetWidth;
         const gap = parseFloat(getComputedStyle(track).gap) || 0;
@@ -37,6 +61,7 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
 
     function setInstantScroll(index) {
         currentIndex = index;
+        updateDots(currentIndex);
         const prevBehavior = track.style.scrollBehavior;
         track.style.scrollBehavior = 'auto';
         track.scrollLeft = getStep() * currentIndex;
@@ -54,9 +79,10 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
     }
 
     function moveToSlide(index) {
-        if (isMoving) return;
+        if (isMoving || index === currentIndex) return;
         isMoving = true;
         currentIndex = index;
+        updateDots(currentIndex);
 
         track.scrollTo({
             left: getStep() * currentIndex,
@@ -149,11 +175,11 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
 });
 
 /* ==========================================
-   2. Лента «Посмотреть другие номера»
-   (на ПК 3 в ряд без прокрутки, на узких экранах — пошаговая скролл-лента)
+2. Лента «Другие номера / рестораны / объекты»
+   (до 3 карточек на ПК — сетка 3 в ряд; > 3 карточек или узкий экран — слайдер со стрелками и точками)
    ========================================== */
-document.querySelectorAll('.other-rooms-wrapper').forEach((wrapper) => {
-    const track = wrapper.querySelector('.other-rooms-track');
+document.querySelectorAll('.other-rooms-wrapper, .related-wrapper').forEach((wrapper) => {
+    const track = wrapper.querySelector('.other-rooms-track, .related-track');
     const prevBtn = wrapper.querySelector('.prev-btn');
     const nextBtn = wrapper.querySelector('.next-btn');
     if (!track || !prevBtn || !nextBtn) return;
@@ -162,7 +188,16 @@ document.querySelectorAll('.other-rooms-wrapper').forEach((wrapper) => {
     const count = cards.length;
     if (count === 0) return;
 
+    if (count > 3) {
+        wrapper.classList.add('is-carousel');
+    }
+
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'slider-dots';
+    wrapper.insertAdjacentElement('afterend', dotsContainer);
+
     let currentIndex = 0;
+    let maxIndex = 0;
     let isMoving = false;
     let startX = 0;
     let startY = 0;
@@ -174,22 +209,52 @@ document.querySelectorAll('.other-rooms-wrapper').forEach((wrapper) => {
         return getComputedStyle(track).display === 'flex';
     }
 
+    function getVisibleCount() {
+        return window.matchMedia('(max-width: 54rem)').matches ? 1 : 3;
+    }
+
     function getStep() {
         const cardWidth = cards[0].offsetWidth;
         const gap = parseFloat(getComputedStyle(track).gap) || 0;
         return cardWidth + gap;
     }
 
+    function updateDots() {
+        const dots = dotsContainer.querySelectorAll('.slider-dot');
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === currentIndex);
+        });
+    }
+
+    function renderDots() {
+        dotsContainer.innerHTML = '';
+        if (!isCarouselActive() || maxIndex <= 0) {
+            dotsContainer.style.display = 'none';
+            return;
+        }
+
+        dotsContainer.style.display = 'flex';
+        for (let i = 0; i <= maxIndex; i++) {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = i === currentIndex ? 'slider-dot active' : 'slider-dot';
+            dot.setAttribute('aria-label', `Слайд ${i + 1}`);
+            dot.addEventListener('click', () => moveToCard(i));
+            dotsContainer.appendChild(dot);
+        }
+    }
+
     function updateButtons() {
         if (!isCarouselActive()) return;
         prevBtn.disabled = currentIndex === 0;
-        nextBtn.disabled = currentIndex >= count - 1;
+        nextBtn.disabled = currentIndex >= maxIndex;
     }
 
     function moveToCard(index) {
         if (!isCarouselActive() || isMoving) return;
-        currentIndex = Math.max(0, Math.min(count - 1, index));
+        currentIndex = Math.max(0, Math.min(maxIndex, index));
         updateButtons();
+        updateDots();
 
         isMoving = true;
         track.scrollTo({
@@ -207,7 +272,7 @@ document.querySelectorAll('.other-rooms-wrapper').forEach((wrapper) => {
     });
 
     nextBtn.addEventListener('click', () => {
-        if (currentIndex < count - 1) moveToCard(currentIndex + 1);
+        if (currentIndex < maxIndex) moveToCard(currentIndex + 1);
     });
 
     track.addEventListener('touchstart', (e) => {
@@ -266,7 +331,7 @@ document.querySelectorAll('.other-rooms-wrapper').forEach((wrapper) => {
         const step = getStep();
         const threshold = Math.min(45, step * 0.18);
 
-        if (dx < -threshold && currentIndex < count - 1) {
+        if (dx < -threshold && currentIndex < maxIndex) {
             moveToCard(currentIndex + 1);
         } else if (dx > threshold && currentIndex > 0) {
             moveToCard(currentIndex - 1);
@@ -287,10 +352,16 @@ document.querySelectorAll('.other-rooms-wrapper').forEach((wrapper) => {
     function syncLayout() {
         if (!isCarouselActive()) {
             currentIndex = 0;
+            maxIndex = 0;
             track.scrollLeft = 0;
+            renderDots();
         } else {
+            const visibleCount = getVisibleCount();
+            maxIndex = Math.max(0, count - visibleCount);
+            currentIndex = Math.min(currentIndex, maxIndex);
             track.scrollLeft = getStep() * currentIndex;
             updateButtons();
+            renderDots();
         }
     }
 
@@ -299,7 +370,7 @@ document.querySelectorAll('.other-rooms-wrapper').forEach((wrapper) => {
 });
 
 /* ==========================================
-   3. Мобильная свайп-лента мозаики (по 1 фото с фиксацией + точки)
+3. Мобильная свайп-лента мозаики (по 1 фото с фиксацией + точки)
    ========================================== */
 document.querySelectorAll('.mosaic-section').forEach((section) => {
     const grid = section.querySelector('.mosaic-grid');
@@ -453,9 +524,9 @@ document.querySelectorAll('.mosaic-section').forEach((section) => {
 });
 
 /* ==========================================
-   4. Лайтбокс для мозаичных галерей (Номера, СПА и др.)
+4. Лайтбокс для галерей и одиночных фото (Номера, Рестораны, СПА и др.)
    ========================================== */
-const mosaicImages = Array.from(document.querySelectorAll('.mosaic-grid .mosaic-item img'));
+const mosaicImages = Array.from(document.querySelectorAll('.mosaic-item img'));
 
 if (mosaicImages.length > 0) {
     const overlay = document.createElement('div');

@@ -176,7 +176,7 @@ header {
 .about p {
     font-size: 1rem;
     color: #718096;
-    max-width: 55rem;
+    max-width: 75rem;
     margin: 0 auto;
     line-height: 1.8;
     padding: 0 1rem;
@@ -323,6 +323,35 @@ header {
     color: #ffffff;
 }
 
+/* Точки-индикаторы под слайдерами */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.4rem;
+}
+
+.slider-dot {
+    width: 0.25rem;
+    height: 0.25rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #cbd5e0;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.slider-dot:hover {
+    background-color: #718096;
+}
+
+.slider-dot.active {
+    background-color: #1a202c;
+    transform: scale(1.2);
+}
+
 /* ==========================================
    Вводная шапка внутренних страниц (Номера и др.)
    ========================================== */
@@ -406,15 +435,18 @@ header {
 }
 
 /* ==========================================
-   Блок «Посмотреть другие номера»
+   Блок «Другие номера / рестораны / объекты»
+   (до 3 карточек — сетка 3 в ряд; больше 3 — слайдер со стрелками сбоку и точками)
    ========================================== */
-.other-rooms-section {
+.other-rooms-section,
+.related-section {
     padding: 3.5rem 0 4.5rem 0;
     background-color: #f7f9fa;
     text-align: center;
 }
 
-.other-rooms-section h2 {
+.other-rooms-section h2,
+.related-section h2 {
     font-size: clamp(1.4rem, 2.8vw, 1.8rem);
     font-weight: 300;
     letter-spacing: 0.12rem;
@@ -424,7 +456,8 @@ header {
     padding: 0 1rem;
 }
 
-.other-rooms-wrapper {
+.other-rooms-wrapper,
+.related-wrapper {
     position: relative;
     max-width: 92rem;
     width: 100%;
@@ -432,25 +465,71 @@ header {
     padding: 0 2.5rem;
 }
 
-/* На ПК все 3 карточки влазят в 1 ряд — без стрелок и прокрутки */
-.other-rooms-track {
+/* По умолчанию (<= 3 карточек на ПК) — статичная сетка 3 в ряд */
+.other-rooms-track,
+.related-track {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     text-align: center;
 }
 
-.other-rooms-track .catalog-img-box {
+.other-rooms-track .catalog-img-box,
+.related-track .catalog-img-box {
     aspect-ratio: 16 / 10;
     margin-bottom: 1rem;
 }
 
-.other-rooms-track .catalog-title {
+.other-rooms-track .catalog-title,
+.related-track .catalog-title {
     text-align: center;
 }
 
-.other-rooms-wrapper .slider-btn {
+.other-rooms-wrapper .slider-btn,
+.related-wrapper .slider-btn {
     display: none;
+}
+
+/* Режим слайдера на ПК, когда карточек больше 3 */
+.other-rooms-wrapper.is-carousel,
+.related-wrapper.is-carousel {
+    padding: 0 4.5rem;
+}
+
+.other-rooms-wrapper.is-carousel .other-rooms-track,
+.related-wrapper.is-carousel .related-track {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    scrollbar-width: none;
+    touch-action: pan-y;
+    overscroll-behavior-x: contain;
+}
+
+.other-rooms-wrapper.is-carousel .other-rooms-track::-webkit-scrollbar,
+.related-wrapper.is-carousel .related-track::-webkit-scrollbar {
+    display: none;
+}
+
+.other-rooms-wrapper.is-carousel .catalog-card,
+.related-wrapper.is-carousel .catalog-card {
+    flex: 0 0 calc((100% - 4rem) / 3);
+}
+
+.other-rooms-wrapper.is-carousel .slider-btn,
+.related-wrapper.is-carousel .slider-btn {
+    display: block;
+    top: calc(((min(100vw, 92rem) - 13rem) / 3) * 0.625 / 2);
+}
+
+.other-rooms-wrapper.is-carousel .prev-btn,
+.related-wrapper.is-carousel .prev-btn {
+    left: 0.75rem;
+}
+
+.other-rooms-wrapper.is-carousel .next-btn,
+.related-wrapper.is-carousel .next-btn {
+    right: 0.75rem;
 }
 
 /* ==========================================
@@ -493,6 +572,37 @@ header {
 
 .mosaic-item:hover img {
     transform: scale(1.04);
+}
+
+/* ==========================================
+   Одиночное крупное фото по центру на ПК (Рестораны и др.)
+   ========================================== */
+.single-photo-section {
+    padding: 7rem 1.5rem 1.5rem 1.5rem;
+    background-color: #ffffff;
+}
+
+.single-photo-box {
+    width: min(72vw, 76rem);
+    height: calc(100vh - 8rem);
+    min-height: 22rem;
+    max-height: 50rem;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: #e2e8f0;
+}
+
+.single-photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    transition: transform 0.6s ease;
+}
+
+.single-photo-box:hover img {
+    transform: scale(1.02);
 }
 
 /* Точки пагинации для мобильной ленты (на ПК скрыты) */
@@ -646,6 +756,12 @@ header {
     .mosaic-grid {
         grid-template-rows: repeat(2, 16rem);
     }
+    .single-photo-section {
+        padding: 6rem 1.5rem 1rem 1.5rem;
+    }
+    .single-photo-box {
+        width: 82vw;
+    }
 }
 
 @media (max-width: 54rem) {
@@ -714,12 +830,18 @@ header {
         right: 0.8rem;
     }
 
-    /* Когда экрана на 3 карточки не хватает — включается скролл-лента со стрелками */
-    .other-rooms-wrapper {
+    /* На мобильных устройствах — всегда слайдер по 1 карточке */
+    .other-rooms-wrapper,
+    .related-wrapper,
+    .other-rooms-wrapper.is-carousel,
+    .related-wrapper.is-carousel {
         padding: 0;
     }
 
-    .other-rooms-track {
+    .other-rooms-track,
+    .related-track,
+    .other-rooms-wrapper.is-carousel .other-rooms-track,
+    .related-wrapper.is-carousel .related-track {
         display: flex;
         overflow-x: auto;
         gap: 1rem;
@@ -729,21 +851,43 @@ header {
         overscroll-behavior-x: contain;
     }
 
-    .other-rooms-track::-webkit-scrollbar {
+    .other-rooms-track::-webkit-scrollbar,
+    .related-track::-webkit-scrollbar {
         display: none;
     }
 
-    .other-rooms-track .catalog-card {
+    .other-rooms-track .catalog-card,
+    .related-track .catalog-card,
+    .other-rooms-wrapper.is-carousel .catalog-card,
+    .related-wrapper.is-carousel .catalog-card {
         flex: 0 0 80vw;
     }
 
-    .other-rooms-track .catalog-img-box {
+    .other-rooms-track .catalog-img-box,
+    .related-track .catalog-img-box {
         margin-bottom: 0.7rem;
     }
 
-    .other-rooms-wrapper .slider-btn {
+    .other-rooms-wrapper .slider-btn,
+    .related-wrapper .slider-btn,
+    .other-rooms-wrapper.is-carousel .slider-btn,
+    .related-wrapper.is-carousel .slider-btn {
         display: block;
         top: calc((80vw * 0.625) / 2);
+    }
+
+    .other-rooms-wrapper .prev-btn,
+    .related-wrapper .prev-btn,
+    .other-rooms-wrapper.is-carousel .prev-btn,
+    .related-wrapper.is-carousel .prev-btn {
+        left: 0.8rem;
+    }
+
+    .other-rooms-wrapper .next-btn,
+    .related-wrapper .next-btn,
+    .other-rooms-wrapper.is-carousel .next-btn,
+    .related-wrapper.is-carousel .next-btn {
+        right: 0.8rem;
     }
 
     /* Мобильная свайп-лента с пошаговой фиксацией по 1 фото */
@@ -772,6 +916,21 @@ header {
     }
 
     .mosaic-item:hover img {
+        transform: none;
+    }
+
+    /* Адаптив одиночного фото на мобильных устройствах (на всю ширину без отступов) */
+    .single-photo-section {
+        padding: 0;
+    }
+
+    .single-photo-box {
+        width: 100%;
+        height: 20rem;
+        min-height: 0;
+    }
+
+    .single-photo-box:hover img {
         transform: none;
     }
 
@@ -858,6 +1017,10 @@ header {
     .mosaic-item,
     .mosaic-main {
         flex: 0 0 88vw;
+        height: 16.5rem;
+    }
+
+    .single-photo-box {
         height: 16.5rem;
     }
 }

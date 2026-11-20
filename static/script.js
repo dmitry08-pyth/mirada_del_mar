@@ -149,7 +149,157 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
 });
 
 /* ==========================================
-   2. Мобильная свайп-лента мозаики (по 1 фото с фиксацией + точки)
+   2. Лента «Посмотреть другие номера»
+   (на ПК 3 в ряд без прокрутки, на узких экранах — пошаговая скролл-лента)
+   ========================================== */
+document.querySelectorAll('.other-rooms-wrapper').forEach((wrapper) => {
+    const track = wrapper.querySelector('.other-rooms-track');
+    const prevBtn = wrapper.querySelector('.prev-btn');
+    const nextBtn = wrapper.querySelector('.next-btn');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    const cards = Array.from(track.querySelectorAll('.catalog-card'));
+    const count = cards.length;
+    if (count === 0) return;
+
+    let currentIndex = 0;
+    let isMoving = false;
+    let startX = 0;
+    let startY = 0;
+    let baseScrollLeft = 0;
+    let isHorizontalSwipe = false;
+    let didSwipe = false;
+
+    function isCarouselActive() {
+        return getComputedStyle(track).display === 'flex';
+    }
+
+    function getStep() {
+        const cardWidth = cards[0].offsetWidth;
+        const gap = parseFloat(getComputedStyle(track).gap) || 0;
+        return cardWidth + gap;
+    }
+
+    function updateButtons() {
+        if (!isCarouselActive()) return;
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex >= count - 1;
+    }
+
+    function moveToCard(index) {
+        if (!isCarouselActive() || isMoving) return;
+        currentIndex = Math.max(0, Math.min(count - 1, index));
+        updateButtons();
+
+        isMoving = true;
+        track.scrollTo({
+            left: getStep() * currentIndex,
+            behavior: 'smooth'
+        });
+
+        setTimeout(() => {
+            isMoving = false;
+        }, 380);
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) moveToCard(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentIndex < count - 1) moveToCard(currentIndex + 1);
+    });
+
+    track.addEventListener('touchstart', (e) => {
+        if (!isCarouselActive() || isMoving || e.touches.length !== 1) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        baseScrollLeft = getStep() * currentIndex;
+        isHorizontalSwipe = false;
+        didSwipe = false;
+    }, { passive: true });
+
+    track.addEventListener('touchmove', (e) => {
+        if (!isCarouselActive() || isMoving || e.touches.length !== 1) return;
+
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+
+        if (!isHorizontalSwipe && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+            isHorizontalSwipe = true;
+            didSwipe = true;
+        }
+
+        if (!isHorizontalSwipe) return;
+
+        if (e.cancelable) {
+            e.preventDefault();
+        }
+
+        const step = getStep();
+        let offset = -dx;
+
+        if (Math.abs(offset) > step) {
+            const extra = Math.abs(offset) - step;
+            offset = Math.sign(offset) * (step + extra * 0.2);
+        }
+
+        const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+        let nextScroll = baseScrollLeft + offset;
+
+        if (nextScroll < 0) {
+            nextScroll = nextScroll * 0.25;
+        } else if (nextScroll > maxScroll) {
+            nextScroll = maxScroll + (nextScroll - maxScroll) * 0.25;
+        }
+
+        const prevBehavior = track.style.scrollBehavior;
+        track.style.scrollBehavior = 'auto';
+        track.scrollLeft = nextScroll;
+        track.style.scrollBehavior = prevBehavior || '';
+    }, { passive: false });
+
+    track.addEventListener('touchend', (e) => {
+        if (!isCarouselActive() || isMoving || !isHorizontalSwipe || !e.changedTouches.length) return;
+
+        const dx = e.changedTouches[0].clientX - startX;
+        const step = getStep();
+        const threshold = Math.min(45, step * 0.18);
+
+        if (dx < -threshold && currentIndex < count - 1) {
+            moveToCard(currentIndex + 1);
+        } else if (dx > threshold && currentIndex > 0) {
+            moveToCard(currentIndex - 1);
+        } else {
+            moveToCard(currentIndex);
+        }
+
+        isHorizontalSwipe = false;
+    }, { passive: true });
+
+    track.addEventListener('click', (e) => {
+        if (didSwipe) {
+            e.preventDefault();
+            didSwipe = false;
+        }
+    });
+
+    function syncLayout() {
+        if (!isCarouselActive()) {
+            currentIndex = 0;
+            track.scrollLeft = 0;
+        } else {
+            track.scrollLeft = getStep() * currentIndex;
+            updateButtons();
+        }
+    }
+
+    syncLayout();
+    window.addEventListener('resize', syncLayout);
+});
+
+/* ==========================================
+   3. Мобильная свайп-лента мозаики (по 1 фото с фиксацией + точки)
    ========================================== */
 document.querySelectorAll('.mosaic-section').forEach((section) => {
     const grid = section.querySelector('.mosaic-grid');
@@ -245,7 +395,6 @@ document.querySelectorAll('.mosaic-section').forEach((section) => {
         const step = getStep();
         let offset = -dx;
 
-        // Ограничиваем ход одним шагом и делаем резиновый упор на краях ленты
         if (Math.abs(offset) > step) {
             const extra = Math.abs(offset) - step;
             offset = Math.sign(offset) * (step + extra * 0.2);
@@ -284,7 +433,6 @@ document.querySelectorAll('.mosaic-section').forEach((section) => {
         isHorizontalSwipe = false;
     }, { passive: true });
 
-    // Блокируем случайное открытие лайтбокса при завершении свайпа (в фазе capture)
     grid.addEventListener('click', (e) => {
         if (didSwipe) {
             e.stopPropagation();
@@ -305,7 +453,7 @@ document.querySelectorAll('.mosaic-section').forEach((section) => {
 });
 
 /* ==========================================
-   3. Лайтбокс для мозаичных галерей (Номера, СПА и др.)
+   4. Лайтбокс для мозаичных галерей (Номера, СПА и др.)
    ========================================== */
 const mosaicImages = Array.from(document.querySelectorAll('.mosaic-grid .mosaic-item img'));
 

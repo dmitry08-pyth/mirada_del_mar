@@ -171,7 +171,6 @@ header {
     letter-spacing: 0.15rem;
     color: #2d3748;
     margin-bottom: 1.2rem;
-    text-transform: uppercase;
 }
 
 .about p {
@@ -284,12 +283,18 @@ header {
     z-index: 20;
     user-select: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, opacity 0.25s ease;
 }
 
-.slider-btn:hover {
+.slider-btn:hover:not(:disabled) {
     background-color: #1a202c;
     color: #ffffff;
+}
+
+.slider-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
 }
 
 .prev-btn {
@@ -364,6 +369,7 @@ header {
     display: block;
     text-decoration: none;
     color: #1a202c;
+    user-select: none;
 }
 
 .catalog-img-box {
@@ -379,6 +385,7 @@ header {
     height: 100%;
     object-fit: cover;
     display: block;
+    pointer-events: none;
     transition: transform 0.5s ease;
 }
 
@@ -396,6 +403,54 @@ header {
 
 .catalog-card:hover .catalog-title {
     color: #2b6cb0;
+}
+
+/* ==========================================
+   Блок «Посмотреть другие номера»
+   ========================================== */
+.other-rooms-section {
+    padding: 3.5rem 0 4.5rem 0;
+    background-color: #f7f9fa;
+    text-align: center;
+}
+
+.other-rooms-section h2 {
+    font-size: clamp(1.4rem, 2.8vw, 1.8rem);
+    font-weight: 300;
+    letter-spacing: 0.12rem;
+    color: #2d3748;
+    margin-bottom: 2.2rem;
+    text-transform: uppercase;
+    padding: 0 1rem;
+}
+
+.other-rooms-wrapper {
+    position: relative;
+    max-width: 92rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+}
+
+/* На ПК все 3 карточки влазят в 1 ряд — без стрелок и прокрутки */
+.other-rooms-track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    text-align: center;
+}
+
+.other-rooms-track .catalog-img-box {
+    aspect-ratio: 16 / 10;
+    margin-bottom: 1rem;
+}
+
+.other-rooms-track .catalog-title {
+    text-align: center;
+}
+
+.other-rooms-wrapper .slider-btn {
+    display: none;
 }
 
 /* ==========================================
@@ -659,6 +714,38 @@ header {
         right: 0.8rem;
     }
 
+    /* Когда экрана на 3 карточки не хватает — включается скролл-лента со стрелками */
+    .other-rooms-wrapper {
+        padding: 0;
+    }
+
+    .other-rooms-track {
+        display: flex;
+        overflow-x: auto;
+        gap: 1rem;
+        padding: 0 10vw;
+        scrollbar-width: none;
+        touch-action: pan-y;
+        overscroll-behavior-x: contain;
+    }
+
+    .other-rooms-track::-webkit-scrollbar {
+        display: none;
+    }
+
+    .other-rooms-track .catalog-card {
+        flex: 0 0 80vw;
+    }
+
+    .other-rooms-track .catalog-img-box {
+        margin-bottom: 0.7rem;
+    }
+
+    .other-rooms-wrapper .slider-btn {
+        display: block;
+        top: calc((80vw * 0.625) / 2);
+    }
+
     /* Мобильная свайп-лента с пошаговой фиксацией по 1 фото */
     .mosaic-section {
         padding: 0.75rem 0 0.75rem 0;
@@ -716,7 +803,7 @@ header {
     }
 
     .about .specs-title {
-        padding-top: 4rem;
+        padding-top: 3rem;
         font-size: clamp(1.15rem, 5vw, 1.5rem);
         letter-spacing: 0.04rem;
         white-space: nowrap;

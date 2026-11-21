@@ -374,6 +374,75 @@ header {
 }
 
 /* ==========================================
+   Витрина-аккордеон остальных разделов (Главная)
+   ========================================== */
+.categories-showcase {
+    padding: 3.5rem 4vw 5rem 4vw;
+    background-color: #ffffff;
+}
+
+.categories-accordion {
+    display: flex;
+    gap: 1.25rem;
+    max-width: 92rem;
+    height: 29rem;
+    margin: 0 auto;
+}
+
+.category-panel {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    background-color: #e2e8f0;
+    transition: flex 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Тёмный градиент снизу, чтобы белая подпись всегда хорошо читалась */
+.category-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.08) 40%, transparent 100%);
+    pointer-events: none;
+}
+
+.category-panel.active {
+    flex: 3.2 1 0;
+}
+
+.category-panel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.category-panel.active img {
+    transform: scale(1.02);
+}
+
+.category-panel-caption {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1rem;
+    z-index: 2;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.04rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
+}
+
+/* ==========================================
    Вкладки категорий + одиночный крупный слайдер
    ========================================== */
 .category-tabs-section {
@@ -976,6 +1045,35 @@ header {
 
     .next-btn {
         right: 0.8rem;
+    }
+
+    /* Адаптив витрины-аккордеона на мобильных */
+    .categories-showcase {
+        padding: 2.5rem 1rem 3.5rem 1rem;
+    }
+
+    .categories-accordion {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        height: auto;
+        gap: 0.75rem;
+    }
+
+    .category-panel,
+    .category-panel.active {
+        flex: none;
+        height: 14rem;
+    }
+
+    .category-panel.active img {
+        transform: none;
+    }
+
+    .category-panel-caption {
+        bottom: 0.9rem;
+        left: 0.9rem;
+        font-size: 0.9rem;
+        white-space: normal;
     }
 
     /* Адаптив вкладок и одиночного слайдера на мобильных (на всю ширину экрана) */

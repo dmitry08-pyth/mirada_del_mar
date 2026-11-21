@@ -867,3 +867,26 @@ if (lightboxTriggers.length > 0) {
         }
     }, { passive: true });
 }
+
+/* ==========================================
+5. Витрина-аккордеон разделов на главной странице
+   ========================================== */
+document.querySelectorAll('.categories-accordion').forEach((accordion) => {
+    const panels = Array.from(accordion.querySelectorAll('.category-panel'));
+    if (panels.length === 0) return;
+
+    function setActivePanel(target) {
+        panels.forEach((panel) => {
+            panel.classList.toggle('active', panel === target);
+        });
+    }
+
+    panels.forEach((panel) => {
+        panel.addEventListener('mouseenter', () => {
+            setActivePanel(panel);
+        });
+        panel.addEventListener('focus', () => {
+            setActivePanel(panel);
+        });
+    });
+});

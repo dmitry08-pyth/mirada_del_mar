@@ -175,6 +175,214 @@ document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
 });
 
 /* ==========================================
+   Одиночный крупный слайдер + вкладки категорий
+   ========================================== */
+document.querySelectorAll('.single-slider-wrapper').forEach((wrapper) => {
+    const frame = wrapper.querySelector('.single-slider-frame');
+    const track = wrapper.querySelector('.single-slider-track');
+    const prevBtn = wrapper.querySelector('.prev-btn');
+    const nextBtn = wrapper.querySelector('.next-btn');
+    if (!frame || !track || !prevBtn || !nextBtn) return;
+
+    const slides = Array.from(track.querySelectorAll('.single-slide'));
+    const count = slides.length;
+    if (count === 0) return;
+
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'slider-dots';
+
+    const dots = slides.map((_, idx) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = idx === 0 ? 'slider-dot active' : 'slider-dot';
+        dot.setAttribute('aria-label', `Фото ${idx + 1}`);
+        dot.addEventListener('click', () => goToSlide(idx));
+        dotsContainer.appendChild(dot);
+        return dot;
+    });
+
+    if (count <= 1) {
+        dotsContainer.style.display = 'none';
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    }
+
+    wrapper.appendChild(dotsContainer);
+
+    let currentIndex = 0;
+    let isMoving = false;
+    let startX = 0;
+    let startY = 0;
+    let baseScrollLeft = 0;
+    let isHorizontalSwipe = false;
+    let didSwipe = false;
+
+    function getStep() {
+        return frame.clientWidth;
+    }
+
+    function updateUI() {
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === currentIndex);
+        });
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex >= count - 1;
+    }
+
+    function setInstant(index) {
+        currentIndex = Math.max(0, Math.min(count - 1, index));
+        const prevBehavior = track.style.scrollBehavior;
+        track.style.scrollBehavior = 'auto';
+        track.scrollLeft = getStep() * currentIndex;
+        track.style.scrollBehavior = prevBehavior || '';
+        updateUI();
+    }
+
+    function goToSlide(index) {
+        if (isMoving) return;
+        const target = Math.max(0, Math.min(count - 1, index));
+        currentIndex = target;
+        updateUI();
+
+        isMoving = true;
+        track.scrollTo({
+            left: getStep() * currentIndex,
+            behavior: 'smooth'
+        });
+
+        setTimeout(() => {
+            isMoving = false;
+        }, 380);
+    }
+
+    setInstant(0);
+
+    wrapper._resetSingleSlider = () => {
+        isMoving = false;
+        setInstant(0);
+    };
+
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) goToSlide(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentIndex < count - 1) goToSlide(currentIndex + 1);
+    });
+
+    track.addEventListener('touchstart', (e) => {
+        if (isMoving || count <= 1 || e.touches.length !== 1) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        baseScrollLeft = getStep() * currentIndex;
+        isHorizontalSwipe = false;
+        didSwipe = false;
+    }, { passive: true });
+
+    track.addEventListener('touchmove', (e) => {
+        if (isMoving || count <= 1 || e.touches.length !== 1) return;
+
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+
+        if (!isHorizontalSwipe && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+            isHorizontalSwipe = true;
+            didSwipe = true;
+        }
+
+        if (!isHorizontalSwipe) return;
+
+        if (e.cancelable) {
+            e.preventDefault();
+        }
+
+        const step = getStep();
+        let offset = -dx;
+
+        if (Math.abs(offset) > step) {
+            const extra = Math.abs(offset) - step;
+            offset = Math.sign(offset) * (step + extra * 0.2);
+        }
+
+        const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+        let nextScroll = baseScrollLeft + offset;
+
+        if (nextScroll < 0) {
+            nextScroll = nextScroll * 0.25;
+        } else if (nextScroll > maxScroll) {
+            nextScroll = maxScroll + (nextScroll - maxScroll) * 0.25;
+        }
+
+        const prevBehavior = track.style.scrollBehavior;
+        track.style.scrollBehavior = 'auto';
+        track.scrollLeft = nextScroll;
+        track.style.scrollBehavior = prevBehavior || '';
+    }, { passive: false });
+
+    track.addEventListener('touchend', (e) => {
+        if (isMoving || !isHorizontalSwipe || !e.changedTouches.length) return;
+
+        const dx = e.changedTouches[0].clientX - startX;
+        const step = getStep();
+        const threshold = Math.min(45, step * 0.16);
+
+        if (dx < -threshold && currentIndex < count - 1) {
+            goToSlide(currentIndex + 1);
+        } else if (dx > threshold && currentIndex > 0) {
+            goToSlide(currentIndex - 1);
+        } else {
+            goToSlide(currentIndex);
+        }
+
+        isHorizontalSwipe = false;
+    }, { passive: true });
+
+    track.addEventListener('click', (e) => {
+        if (didSwipe) {
+            e.stopPropagation();
+            e.preventDefault();
+            didSwipe = false;
+        }
+    }, true);
+
+    window.addEventListener('resize', () => {
+        if (wrapper.offsetParent !== null) {
+            setInstant(currentIndex);
+        }
+    });
+});
+
+document.querySelectorAll('[data-tabs-gallery]').forEach((tabsSection) => {
+    const buttons = Array.from(tabsSection.querySelectorAll('.category-tab-btn'));
+    const panels = Array.from(tabsSection.querySelectorAll('.category-tab-panel'));
+
+    buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const targetKey = btn.dataset.tab;
+            if (btn.classList.contains('active')) return;
+
+            buttons.forEach((b) => {
+                const isTarget = b === btn;
+                b.classList.toggle('active', isTarget);
+                b.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+            });
+
+            panels.forEach((panel) => {
+                const isTarget = panel.dataset.panel === targetKey;
+                panel.classList.toggle('active', isTarget);
+
+                if (isTarget) {
+                    const slider = panel.querySelector('.single-slider-wrapper');
+                    if (slider && typeof slider._resetSingleSlider === 'function') {
+                        slider._resetSingleSlider();
+                    }
+                }
+            });
+        });
+    });
+});
+
+/* ==========================================
 2. Лента «Другие номера / рестораны / объекты»
    (до 3 карточек на ПК — сетка 3 в ряд; > 3 карточек или узкий экран — слайдер со стрелками и точками)
    ========================================== */
@@ -524,11 +732,13 @@ document.querySelectorAll('.mosaic-section').forEach((section) => {
 });
 
 /* ==========================================
-4. Лайтбокс для галерей и одиночных фото (Номера, Рестораны, СПА и др.)
+4. Лайтбокс для галерей и слайдеров категорий
    ========================================== */
-const mosaicImages = Array.from(document.querySelectorAll('.mosaic-item img'));
+const lightboxTriggers = Array.from(
+    document.querySelectorAll('.mosaic-item, .single-slide')
+);
 
-if (mosaicImages.length > 0) {
+if (lightboxTriggers.length > 0) {
     const overlay = document.createElement('div');
     overlay.className = 'lightbox-overlay';
     overlay.innerHTML = `
@@ -561,20 +771,23 @@ if (mosaicImages.length > 0) {
     const nextBtn = overlay.querySelector('.lightbox-next');
     const fullImg = overlay.querySelector('.lightbox-img');
 
+    let activeGroup = [];
     let currentIdx = 0;
     let touchStartX = 0;
 
     function updateLightbox() {
-        const target = mosaicImages[currentIdx];
+        const target = activeGroup[currentIdx];
+        if (!target) return;
         fullImg.src = target.src;
         fullImg.alt = target.alt || '';
-        counter.textContent = `${currentIdx + 1} / ${mosaicImages.length}`;
+        counter.textContent = `${currentIdx + 1} / ${activeGroup.length}`;
 
         prevBtn.disabled = currentIdx === 0;
-        nextBtn.disabled = currentIdx === mosaicImages.length - 1;
+        nextBtn.disabled = currentIdx === activeGroup.length - 1;
     }
 
-    function openLightbox(index) {
+    function openLightbox(images, index) {
+        activeGroup = images;
         currentIdx = index;
         updateLightbox();
         overlay.classList.add('active');
@@ -586,11 +799,19 @@ if (mosaicImages.length > 0) {
         document.body.style.overflow = '';
     }
 
-    mosaicImages.forEach((img, index) => {
-        const item = img.closest('.mosaic-item');
-        if (item) {
-            item.addEventListener('click', () => openLightbox(index));
-        }
+    lightboxTriggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+            const img = trigger.querySelector('img');
+            if (!img) return;
+
+            const container = trigger.closest('.mosaic-grid, .single-slider-track');
+            const groupImages = container
+                ? Array.from(container.querySelectorAll('img'))
+                : [img];
+
+            const idx = Math.max(0, groupImages.indexOf(img));
+            openLightbox(groupImages, idx);
+        });
     });
 
     prevBtn.addEventListener('click', () => {
@@ -601,7 +822,7 @@ if (mosaicImages.length > 0) {
     });
 
     nextBtn.addEventListener('click', () => {
-        if (currentIdx < mosaicImages.length - 1) {
+        if (currentIdx < activeGroup.length - 1) {
             currentIdx++;
             updateLightbox();
         }
@@ -622,7 +843,7 @@ if (mosaicImages.length > 0) {
             currentIdx--;
             updateLightbox();
         }
-        if (e.key === 'ArrowRight' && currentIdx < mosaicImages.length - 1) {
+        if (e.key === 'ArrowRight' && currentIdx < activeGroup.length - 1) {
             currentIdx++;
             updateLightbox();
         }
@@ -637,7 +858,7 @@ if (mosaicImages.length > 0) {
     overlay.addEventListener('touchend', (e) => {
         if (!e.changedTouches.length) return;
         const dx = e.changedTouches[0].clientX - touchStartX;
-        if (dx < -40 && currentIdx < mosaicImages.length - 1) {
+        if (dx < -40 && currentIdx < activeGroup.length - 1) {
             currentIdx++;
             updateLightbox();
         } else if (dx > 40 && currentIdx > 0) {

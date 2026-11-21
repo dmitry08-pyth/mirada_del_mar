@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пляж и Бассейны Mirada Del Mar</title>
+  <link rel="stylesheet" href="D:/mirada_del_mar/static/style.css">    
+</head>
+<body>
+  <header id="site-header">
+    <a href="D:/mirada_del_mar/templates/index.html" class="logo">
+      <img src="D:/mirada_del_mar/static/images/mirada-del-mar-logo.jpg" alt="Mirada Del Mar">
+    </a>
+
+    <nav class="nav-menu">
+      <a href="D:/mirada_del_mar/templates/rooms/rooms.html">Номера</a>
+      <a href="D:/mirada_del_mar/templates/gastronomy/gastronomy.html">Гастрономия</a>
+      <a href="D:/mirada_del_mar/templates/beach_and_pools/beach_and_pools.html">Пляж и бассейны</a>
+      <a href="D:/mirada_del_mar/templates/spa/spa.html">СПА</a>
+      <a href="D:/mirada_del_mar/templates/kids/kids.html">Дети</a>
+      <a href="D:/mirada_del_mar/templates/activities/activities.html">Активности</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="D:/mirada_del_mar/templates/reviews.html" class="nav-btn-primary">Отзывы</a>
+      <a href="D:/mirada_del_mar/templates/booking.html" class="nav-btn-secondary">Бронирование</a>
+    </div>
+  </header>
+  
+  <main>
+    <!-- ГАЛЕРЕЯ -->
+    <section class="mosaic-section">
+      <div class="mosaic-grid">
+        <div class="mosaic-item mosaic-main">
+          <img src="D:/mirada_del_mar/static/images/aquapark/aquapark-2.jpg" alt="Аквапарк">
+        </div>
+
+        <div class="mosaic-item">
+          <img src="D:/mirada_del_mar/static/images/pools/pool-4.jpg" alt="Бассейн">
+        </div>
+
+        <div class="mosaic-item">
+          <img src="D:/mirada_del_mar/static/images/beach/beach-1.jpg" alt="Пляж">
+        </div>
+
+        <div class="mosaic-item">
+          <img src="D:/mirada_del_mar/static/images/pools/pool-3.jpg" alt="Бассейн">
+        </div>
+
+        <div class="mosaic-item">
+          <img src="D:/mirada_del_mar/static/images/beach/beach-2.jpg" alt="Пляж">
+        </div>
+      </div>
+    </section>
+
+    <!-- ОПИСАНИЕ -->
+    <section class="about">
+      <h2 style="font-weight: 400;">Пляж и бассейны</h2>
+      <p>Наслаждайтесь солнцем и морем на нашем частном пляже с мелким песком и неповторимым видом на Средиземное море. Расслабьтесь в течение
+        всего дня благодаря кристально чистой воде и удобным шезлонгам. А наши просторные бассейны ждут вас для освежающего отдыха и приятных
+        моментов. Наслаждайтесь водой в специально оборудованных зонах для взрослых и детей!</p>
+    </section>
+
+    <!-- ВКЛАДКИ И КРУПНЫЙ СЛАЙДЕР -->
+    <section class="category-tabs-section" data-tabs-gallery>
+      <div class="category-tabs-bar" role="tablist" aria-label="Категории пляжа и бассейнов">
+        <button type="button" class="category-tab-btn active" role="tab" aria-selected="true" data-tab="beach">Пляж</button>
+        <button type="button" class="category-tab-btn" role="tab" aria-selected="false" data-tab="pool">Бассейн</button>
+        <button type="button" class="category-tab-btn" role="tab" aria-selected="false" data-tab="aquapark">Аквапарк</button>
+      </div>
+
+      <div class="category-tabs-content">
+        <!-- Вкладка: Пляж -->
+        <div class="category-tab-panel active" data-panel="beach">
+          <div class="single-slider-wrapper">
+            <div class="single-slider-frame">
+              <div class="single-slider-track">
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/beach/beach-4.jpg" alt="Пляж">
+                </div>
+                
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/beach/beach-3.jpg" alt="Пляж">
+                </div>
+                
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/beach/beach-1.jpg" alt="Пляж">
+                </div>
+
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/beach/beach-2.jpg" alt="Пляж">
+                </div>
+              </div>
+
+              <button type="button" class="slider-btn prev-btn" aria-label="Предыдущее фото">&#8592;</button>
+              <button type="button" class="slider-btn next-btn" aria-label="Следующее фото">&#8594;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Вкладка: Бассейн -->
+        <div class="category-tab-panel" data-panel="pool">
+          <div class="single-slider-wrapper">
+            <div class="single-slider-frame">
+              <div class="single-slider-track">
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/pools/pool-1.jpg" alt="Бассейн">
+                </div>
+                
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/pools/pool-2.jpg" alt="Бассейн">
+                </div>
+                
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/pools/pool-3.jpg" alt="Бассейн">
+                </div>
+                
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/pools/pool-4.jpg" alt="Бассейн">
+                </div>
+              </div>
+
+              <button type="button" class="slider-btn prev-btn" aria-label="Предыдущее фото">&#8592;</button>
+              <button type="button" class="slider-btn next-btn" aria-label="Следующее фото">&#8594;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Вкладка: Аквапарк -->
+        <div class="category-tab-panel" data-panel="aquapark">
+          <div class="single-slider-wrapper">
+            <div class="single-slider-frame">
+              <div class="single-slider-track">
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/aquapark/aquapark-1.jpg" alt="Аквапарк">
+                </div>
+                
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/aquapark/aquapark-2.jpg" alt="Аквапарк для всей семьи">
+                </div>
+                
+                <div class="single-slide">
+                  <img src="D:/mirada_del_mar/static/images/aquapark/aquapark-3.jpg" alt="Аквапарк">
+                </div>
+              </div>
+
+              <button type="button" class="slider-btn prev-btn" aria-label="Предыдущее фото">&#8592;</button>
+              <button type="button" class="slider-btn next-btn" aria-label="Следующее фото">&#8594;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <script src="D:/mirada_del_mar/static/script.js"></script>
+</body>
+</html>

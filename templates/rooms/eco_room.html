@@ -1,35 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Эконом номер - Mirada Del Mar</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    
-    <header id="site-header">
-    <a href="/" class="logo">
-      <img src="/static/images/mirada-del-mar-logo.jpg" alt="Mirada Del Mar">
-    </a>
+{% extends "base.html" %}
 
-    <nav class="nav-menu">
-      <a href="/rooms">Номера</a>
-      <a href="/gastronomy">Гастрономия</a>
-      <a href="/beach-and-pools">Пляж и бассейны</a>
-      <a href="/spa">СПА</a>
-      <a href="/kids">Дети</a>
-      <a href="/activities">Активности</a>
-    </nav>
+{% block title %}Эконом номер - Mirada Del Mar{% endblock %}
 
-    <div class="header-actions">
-      <a href="/reviews" class="nav-btn-primary">Отзывы</a>
-      <a href="/booking" class="nav-btn-secondary">Бронирование</a>
-    </div>
-  </header>
-
-  <main>
-    <!-- ГАЛЕРЕЯ ЭКОНОМ НОМЕРА -->
+{% block content %}
+<!-- МОЗАИЧНАЯ ГАЛЕРЕЯ -->
     <section class="mosaic-section">
       <div class="mosaic-grid">  
         <div class="mosaic-item mosaic-main">
@@ -49,7 +23,7 @@
       </div>
     </section>
 
-    <!-- ОПИСАНИЕ ЭКОНОМ НОМЕРА -->
+    <!-- ОПИСАНИЕ -->
     <section class="about">
       <h2 style="font-weight: 400;">Эконом номер</h2>
       <p>В нашем эконом номере царит расслабляющая атмосфера, а декор выполнен в стильном и современном стиле.</p>
@@ -107,8 +81,4 @@
         <button class="slider-btn next-btn" aria-label="Следующий номер">&#8594;</button>
       </div>
     </section>
-  
-  </main>
-  <script src="/static/script.js"></script>
-</body>
-</html>
+{% endblock %}

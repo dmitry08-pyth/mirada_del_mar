@@ -1,35 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Номер Garden Chalet - Mirada Del Mar</title>
-  <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-  <header id="site-header">
-    <a href="/" class="logo">
-      <img src="/static/images/mirada-del-mar-logo.jpg" alt="Mirada Del Mar">
-    </a>
+{% block title %}Garden Chalet - Mirada Del Mar{% endblock %}
 
-    <nav class="nav-menu">
-      <a href="/rooms">Номера</a>
-      <a href="/gastronomy">Гастрономия</a>
-      <a href="/beach-and-pools">Пляж и бассейны</a>
-      <a href="/spa">СПА</a>
-      <a href="/kids">Дети</a>
-      <a href="/activities">Активности</a>
-    </nav>
-
-    <div class="header-actions">
-      <a href="/reviews" class="nav-btn-primary">Отзывы</a>
-      <a href="/booking" class="nav-btn-secondary">Бронирование</a>
-    </div>
-  </header>
-
-  <main>
-    <!-- ГАЛЕРЕЯ GARDEN CHALET -->
+{% block content %}
+<!-- МОЗАИЧНАЯ ГАЛЕРЕЯ -->
     <section class="mosaic-section">
       <div class="mosaic-grid">
         <div class="mosaic-item mosaic-main">
@@ -54,7 +28,7 @@
       </div>
     </section>
 
-    <!-- ОПИСАНИЕ GARDEN CHALET -->
+    <!-- ОПИСАНИЕ -->
     <section class="about">
       <h2 style="font-weight: 400;">Garden Chalet</h2>
       <p>Всего имеется 110 номеров Garden Chalet площадью 26 м². Уютные и комфортные номера с ярким интерьером оснащены керамическим
@@ -114,8 +88,4 @@
         <button class="slider-btn next-btn" aria-label="Следующий номер">&#8594;</button>
       </div>
     </section>
-
-  </main>
-  <script src="/static/script.js"></script>
-</body>
-</html>
+{% endblock %}

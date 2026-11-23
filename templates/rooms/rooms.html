@@ -1,35 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Номера - Mirada Del Mar</title>
-  <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-  <header id="site-header">
-    <a href="/" class="logo">
-      <img src="/static/images/mirada-del-mar-logo.jpg" alt="Mirada Del Mar">
-    </a>
+{% block title %}Номера - Mirada Del Mar{% endblock %}
 
-    <nav class="nav-menu">
-      <a href="/rooms">Номера</a>
-      <a href="/gastronomy">Гастрономия</a>
-      <a href="/beach-and-pools">Пляж и бассейны</a>
-      <a href="/spa">СПА</a>
-      <a href="/kids">Дети</a>
-      <a href="/activities">Активности</a>
-    </nav>
-
-    <div class="header-actions">
-      <a href="/reviews" class="nav-btn-primary">Отзывы</a>
-      <a href="/booking" class="nav-btn-secondary">Бронирование</a>
-    </div>
-  </header>
-
-  <main>
-    <!-- PAGE-INTRO -->
+{% block content %}
+<!-- ОПИСАНИЕ -->
     <section class="page-intro">
       <h1>Номера</h1>
       <p>Продуманный комфорт для каждого гостя. Выберите подходящую категорию номера для подробного ознакомления.</p>
@@ -67,9 +41,4 @@
         </a>
       </div>
     </section>
-
-  </main>
-
-  <script src="/static/script.js"></script>
-</body>
-</html>
+{% endblock %}

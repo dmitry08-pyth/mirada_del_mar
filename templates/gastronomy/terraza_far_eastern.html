@@ -1,33 +1,8 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terraza Far Eastern & Sushi Mirada Del Mar</title>
-  <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-  <header id="site-header">
-    <a href="/" class="logo">
-      <img src="/static/images/mirada-del-mar-logo.jpg" alt="Mirada Del Mar">
-    </a>
+{% extends "base.html" %}
 
-    <nav class="nav-menu">
-      <a href="/rooms">Номера</a>
-      <a href="/gastronomy">Гастрономия</a>
-      <a href="/beach-and-pools">Пляж и бассейны</a>
-      <a href="/spa">СПА</a>
-      <a href="/kids">Дети</a>
-      <a href="/activities">Активности</a>
-    </nav>
+{% block title %}Terraza Far Eastern & Sushi - Mirada Del Mar{% endblock %}
 
-    <div class="header-actions">
-      <a href="/reviews" class="nav-btn-primary">Отзывы</a>
-      <a href="/booking" class="nav-btn-secondary">Бронирование</a>
-    </div>
-  </header>
-
-  <main>
+{% block content %}
     <!-- ФОТО -->
     <section class="single-photo-section">
       <div class="single-photo-box mosaic-item">
@@ -90,8 +65,4 @@
         <button class="slider-btn next-btn" aria-label="Следующий ресторан">&#8594;</button>
       </div>
     </section>
-
-  </main>
-  <script src="/static/script.js"></script>
-</body>
-</html>
+{% endblock %}

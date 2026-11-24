@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -8,7 +8,10 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+# ===============
 # ГЛАВНАЯ СТРАНИЦА
+# ===============
+
 @app.get("/", response_class=HTMLResponse)
 async def home_page(request: Request):
     return templates.TemplateResponse(request=request, name="index.html")
@@ -110,3 +113,61 @@ async def anatolia_page(request: Request):
 @app.get("/gastronomy/pescado-mexican", response_class=HTMLResponse)
 async def pescado_mexican_page(request: Request):
     return templates.TemplateResponse(request=request, name="gastronomy/pescado_mexican.html")
+
+
+# ===============
+# ЛИЧНЫЙ КАБИНЕТ
+# ===============
+
+# вход
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse(request=request, name="login.html")
+
+
+@app.post("/login", response_class=HTMLResponse)
+async def login_submit(
+    request: Request,
+    email: str = Form(...),
+    password: str = Form(...)
+):
+    print(f"Попытка входа: {email} | {password}")
+    return RedirectResponse(url="/profile", status_code=303)
+
+# регистрация
+@app.get("/register", response_class=HTMLResponse)
+async def register_page(request: Request):
+    return templates.TemplateResponse(request=request, name="register.html")
+
+
+@app.post("/register", response_class=HTMLResponse)
+async def register_submit(
+    request: Request,
+    name: str = Form(...),
+    email: str = Form(...),
+    password: str = Form(...),
+    password_confirm: str = Form(...)
+):
+    if password != password_confirm:
+        return templates.TemplateResponse(
+            request=request,
+            name="register.html",
+            context={"error": "Пароли не совпадают"}
+        )
+    print(f"Новая регистрация: {name} | {email} | {password}")
+    return RedirectResponse(url="/profile", status_code=303)
+
+
+@app.get("/profile", response_class=HTMLResponse)
+async def profile_page(request: Request):
+    # Временный тестовый пользователь для проверки вёрстки
+    fake_user = {
+        "name": "Василий",
+        "email": "vasilii@example.com",
+        "avatar": None
+    }
+    return templates.TemplateResponse(
+        request=request,
+        name="profile.html",
+        context={"current_user": fake_user}
+    )

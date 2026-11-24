@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Личный кабинет — Mirada Del Mar{% endblock %}
+
+{% block content %}
+<section class="profile-section">
+  <div class="profile-container">
+
+    <!-- Левая колонка: данные пользователя и аватар -->
+    <aside class="profile-sidebar">
+      <div class="profile-avatar-box">
+        <img src="{{ current_user.avatar or '/static/images/default-avatar.jpg' }}" alt="Аватар" class="profile-avatar">
+      </div>
+
+      <h1 class="profile-name">{{ current_user.name }}</h1>
+      <p class="profile-email">{{ current_user.email }}</p>
+
+      <form action="/profile/avatar" method="post" enctype="multipart/form-data" class="avatar-upload-form">
+        <label for="avatar-input" class="avatar-upload-label">Выбрать фото</label>
+        <input type="file" id="avatar-input" name="avatar" accept="image/*" required>
+        <button type="submit" class="avatar-submit-btn">Обновить фото</button>
+      </form>
+
+      <form action="/logout" method="post" class="logout-form">
+        <button type="submit" class="logout-btn">Выйти из аккаунта</button>
+      </form>
+    </aside>
+
+    <!-- Правая колонка: бронирования и отзывы -->
+    <div class="profile-main">
+      <div class="profile-block">
+        <div class="profile-block-header">
+          <h2>Мои бронирования</h2>
+          <a href="/booking" class="profile-action-link">Забронировать номер</a>
+        </div>
+        <p class="profile-empty">У вас пока нет оформленных бронирований.</p>
+      </div>
+
+      <div class="profile-block">
+        <div class="profile-block-header">
+          <h2>Мои отзывы</h2>
+          <a href="/reviews" class="profile-action-link">Написать отзыв</a>
+        </div>
+        <p class="profile-empty">Вы ещё не оставляли отзывов об отеле.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

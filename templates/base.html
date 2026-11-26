@@ -28,12 +28,12 @@
 
       {% if current_user %}
         <a href="/profile" class="account-btn is-logged-in" title="Личный кабинет">
-          <img src="{{ current_user.avatar or '/static/images/default-avatar.jpg' }}" alt="Профиль" class="account-avatar">
+          <img src="{{ current_user.avatar or '/static/images/avatars/default-avatar.jpg' }}" alt="Профиль" class="account-avatar">
           <span class="account-label">{{ current_user.name }}</span>
         </a>
       {% else %}
         <a href="/login" class="account-btn" title="Войти в аккаунт">
-          <img src="/static/images/default-avatar.jpg" alt="Гость" class="account-avatar">
+          <img src="/static/images/avatars/default-avatar.jpg" alt="Гость" class="account-avatar">
           <span class="account-label">Гость</span>
         </a>
       {% endif %}

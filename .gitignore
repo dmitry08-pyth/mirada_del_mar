@@ -1,1 +1,8 @@
 __pycache__/
+*.py[cod]
+venv/
+.venv/
+.env
+static/images/avatars/
+.vscode/
+Thumbs.db

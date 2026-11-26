@@ -9,7 +9,7 @@
     <!-- Левая колонка: данные пользователя и аватар -->
     <aside class="profile-sidebar">
       <div class="profile-avatar-box">
-        <img src="{{ current_user.avatar or '/static/images/default-avatar.jpg' }}" alt="Аватар" class="profile-avatar">
+        <img src="{{ current_user.avatar or '/static/avatars/images/default-avatar.jpg' }}" alt="Аватар" class="profile-avatar">
       </div>
 
       <h1 class="profile-name">{{ current_user.name }}</h1>
